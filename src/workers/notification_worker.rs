@@ -15,6 +15,7 @@ pub async fn notification_worker(
     mut rx: Receiver<NotificationJob>,
     jobs: Arc<Mutex<HashMap<String, JobStatus>>>
 ) {
+
     
     while let Some(job) = rx.recv().await {
         //logica de trabalho
@@ -24,7 +25,7 @@ pub async fn notification_worker(
             
         }
 
-        tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+        tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
 
         {
             let mut map = jobs.lock().await;
@@ -35,3 +36,5 @@ pub async fn notification_worker(
     }
 
 }
+
+//essa ideia é interessante, aqui sobrescrevemos o dado, aí liberamos o lock, trabalhos na nossa logica e depois locamos o map de nv e sobrescrevemos de nv, isso é interessante, como eu não sei quanto tempo vai demorar na minha logica, eu libero logo meu appstate pra outro usar e depois peço de vc pra usar mais uma vez.
