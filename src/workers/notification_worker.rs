@@ -25,11 +25,16 @@ pub async fn notification_worker(
             
         }
 
-        tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
+        tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
 
         {
             let mut map = jobs.lock().await;
-            map.insert(job.id.clone(), JobStatus::Completed);
+            if job.notification_type == "Failed" {
+                map.insert(job.id.clone(), JobStatus::Failed);
+            } else {
+                map.insert(job.id.clone(), JobStatus::Completed);
+            }
+            
             
         }
 
