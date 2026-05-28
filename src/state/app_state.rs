@@ -8,6 +8,7 @@ use crate::models::{
     job_status::JobStatus,
 };
 
+
 pub struct AppState {
     pub tx: Sender<NotificationJob>,
     pub jobs: Arc<Mutex<HashMap<String, JobStatus>>>,
